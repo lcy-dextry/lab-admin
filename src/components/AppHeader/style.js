@@ -9,7 +9,7 @@ export const AppHeaderWrapper = styled.div`
         display: block;
         position: absolute;
         top: 7px;
-        right: 20px;
+        right: 80px;
         width: 40px;
         height: 40px;
         border-radius: 14px;
@@ -28,5 +28,10 @@ export const AppHeaderWrapper = styled.div`
                 color: #FFF !important;
             }
         }
+    }
+    .quit-part{
+        position: absolute;
+        top: 7px;
+        right: 20px;
     }
 `

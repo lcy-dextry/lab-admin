@@ -1,21 +1,21 @@
-import React, { memo } from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
 // 组件
-import Guide from 'c/Guide';
-import AppHeader from 'c/AppHeader';
-import store from '@/store';
-import RoutesMap from '@/utils/routes.js';
+import Login from '@/pages/Login';
+import Admin from '@/pages/Admin';
+// 数据
+import { auth } from '@/utils/cloudBase';
+import { login } from '@/redux/actions';
 
-const App = memo(() => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Guide />
-        <AppHeader />
-        <RoutesMap />
-      </BrowserRouter>
-    </Provider>
-  )
-})
-export default App;
+const App = ({ loginState, login }) => {
+  useEffect(() => {
+    auth.hasLoginState() ? login(true) : login(false);
+  }, [loginState]);
+  return <>{loginState ? <Admin /> : <Login />}</>;
+};
+export default connect(
+  state => ({
+    loginState: state.loginState
+  }),
+  { login }
+)(App);
