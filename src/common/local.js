@@ -1,5 +1,5 @@
 // cloudBase ID
-export const env = 'fluid-lab-admin-2g8xcgeh5fb66c3d';
+export const env = 'fluid-lab-admin-0gjtvps336032515';
 // guide-banner
 export const guideLinks = [
     { title: '导师简介', link: '/tutor' },
@@ -10,6 +10,6 @@ export const guideLinks = [
     { title: '课题组新闻', link: '/news' }
 ]
 // lab-url
-export const labURL = 'https://fluid-lab-0g8j1fcfc928f1ac-1312377968.tcloudbaseapp.com/'
+export const labURL = 'https://fluidlab.top'
 // activity-classes
 export const activityType = ['成员合影', '学术活动', '日常活动', '成员风采']
