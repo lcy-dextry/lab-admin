@@ -1,4 +1,5 @@
 import React, { memo, useState, useEffect } from 'react'
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import { connect } from 'react-redux'
 import moment from 'moment'
 // 组件

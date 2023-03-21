@@ -1,4 +1,5 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState } from 'react'
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import { connect } from 'react-redux';
 // 组件
 import { notification } from 'antd';
@@ -23,7 +24,7 @@ const News = memo(({
                 getNews(res.data);
             });
     };
-    useEffect(() => {
+    useDeepCompareEffect(() => {
         getNewTexts();
         setText(news);
     }, [news]);
