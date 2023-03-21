@@ -1,5 +1,7 @@
 // login
 export const LOGIN = 'login';
+// carousel
+export const GET_CAROUSEL_IMG = 'get-carousel-img';
 // tutor
 export const GET_TUTOR_TEXT = 'get-tutor-text';
 // publication

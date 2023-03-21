@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import { Navigate, useRoutes } from 'react-router-dom'
 // 组件
+const Carousel = React.lazy(_ => import('@/pages/Admin/pages/Carousel'))
 const Tutor = React.lazy(_ => import('@/pages/Admin/pages/Tutor'))
 const Research = React.lazy(_ => import('@/pages/Admin/pages/Research'))
 const Publication = React.lazy(_ => import('@/pages/Admin/pages/Publication'))
@@ -13,7 +14,8 @@ const ModifyActivity = React.lazy(_ => import('@/pages/Admin/pages/ModifyActivit
 
 const routes = memo(() => {
     const routes = useRoutes([
-        { path: '', element: <Navigate to='/tutor' /> },
+        { path: '', element: <Navigate to='/carousel' /> },
+        { path: '/carousel', element: <Carousel /> },
         { path: '/tutor', element: <Tutor /> },
         { path: '/modifyTutor', element: <ModifyTutor /> },
         { path: '/research', element: <Research /> },

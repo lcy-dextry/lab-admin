@@ -1,5 +1,6 @@
 import {
     GET_ACTIVITY,
+    GET_CAROUSEL_IMG,
     GET_MEMBERS,
     GET_NEWS,
     GET_PUBLICATION,
@@ -10,6 +11,11 @@ import {
 // 登录
 export const login = data => ({
     type: LOGIN,
+    data,
+});
+// 获得Carousel页面数据
+export const getCarouselImg = data => ({
+    type: GET_CAROUSEL_IMG,
     data,
 });
 // 获得Tutor页面数据
