@@ -9,6 +9,7 @@ const Members = React.lazy(_ => import('@/pages/Admin/pages/Members'))
 const News = React.lazy(_ => import('@/pages/Admin/pages/News'))
 const Activity = React.lazy(_ => import('@/pages/Admin/pages/Activity'))
 const ModifyTutor = React.lazy(_ => import('@/pages/Admin/pages/ModifyTutor'))
+const ModifyResearch = React.lazy(_ => import('@/pages/Admin/pages/ModifyResearch'))
 const ModifyNews = React.lazy(_ => import('@/pages/Admin/pages/ModifyNews'))
 const ModifyActivity = React.lazy(_ => import('@/pages/Admin/pages/ModifyActivity'))
 
@@ -19,6 +20,7 @@ const routes = memo(() => {
         { path: '/tutor', element: <Tutor /> },
         { path: '/modifyTutor', element: <ModifyTutor /> },
         { path: '/research', element: <Research /> },
+        { path: '/modifyResearch', element: <ModifyResearch /> },
         { path: '/publication', element: <Publication /> },
         { path: '/members', element: <Members /> },
         { path: '/activity', element: <Activity /> },

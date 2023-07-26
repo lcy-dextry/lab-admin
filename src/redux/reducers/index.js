@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import loginState from './loginState';
 import carousel from './carousel'
 import tutorText from './tutorText';
+import researchText from './researchText';
 import publication from './publication';
 import members from './members';
 import news from './news';
@@ -11,6 +12,7 @@ const reducer = combineReducers({
     loginState,
     carousel,
     tutorText,
+    researchText,
     publication,
     members,
     news,
