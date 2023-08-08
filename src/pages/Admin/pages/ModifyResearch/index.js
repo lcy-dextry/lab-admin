@@ -1,6 +1,5 @@
 import React, { memo, useState, useEffect } from 'react'
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { marked } from 'marked';
 import qs from 'qs';
 // 组件
@@ -24,44 +23,37 @@ const ModifyResearch = memo((props) => {
         smartypants: false
     })
     // 内容
-    const [type, setType] = useState('');
-    const [location, setLocation] = useState('');
-    const [date, setDate] = useState('');
     const [text, setText] = useState('');
     const [markdownText, setMarkdownText] = useState('');
     // 状态
     const [isEdit, setIsEdit] = useState(false);
-    const [id, setID] = useState('');
+    const [type, setType] = useState('');
     const [isJudged, setIsJudged] = useState(false);
     // 获取所有内容
     useEffect(() => {
         getTexts();
     }, [])
-    // 判断状态: 编辑/添加
+    // 判断状态: 编辑
     useEffect(() => {
         const Edit = document.location.search !== '' ? true : false;
         if (Edit) {
             const params = qs.parse(document.location.search.slice(1));
-            const { id } = params;
-            setID(id);
+            const { type } = params;
+            setType(type);
         }
         setIsEdit(Edit);
         setIsJudged(true);
     }, [document.location.search]);
-    // 编辑=自动填入内容
+    // 自动填入内容
     useEffect(() => {
         if (!isJudged) return;
         if (!isEdit) {
-            setDate(moment().format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
             return;
         } else {
-            const detailText = props.texts.filter(item => item._id === id)[0]
-            const { type, location, text, markdownText, date } = detailText;
-            setType(type);
-            setLocation(location);
+            const detailText = props.texts.filter(item => item.type === type)[0]
+            const { text, markdownText } = detailText;
             setText(text);
             setMarkdownText(markdownText);
-            setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
         }
     }, [props.texts, document.location.search])
     // 获取最新所有内容
@@ -69,34 +61,7 @@ const ModifyResearch = memo((props) => {
         db.collection('research')
             .get()
             .then(res => {
-                console.log(res)
                 props.getResearchText(res.data);
-            });
-    };
-    // 添加到数据库
-    const addToDB = () => {
-        const page = '/research';
-        const message = '添加内容成功！';
-        const icon = <CarryOutOutlined style={{ color: 'blue' }} />
-
-        db.collection('research')
-            .add({
-                type,
-                location,
-                date: new Date().getTime(),
-                text,
-                markdownText
-            })
-            .then(res => {
-                // console.log(res);
-                getTexts();
-                window.location.href = page;
-                notification.open({
-                    message,
-                    placement: 'bottomLeft',
-                    icon,
-                    duration: 1.5,
-                });
             });
     };
     // 更新数据库
@@ -106,13 +71,10 @@ const ModifyResearch = memo((props) => {
         const icon = <CarryOutOutlined style={{ color: 'blue' }} />
 
         db.collection('research')
-            .doc(id)
+            .where({ type: 'edit' })
             .update({
-                type,
-                location,
                 text,
                 markdownText,
-                date: new Date(date).getTime(),
             })
             .then(res => {
                 getTexts();
@@ -127,16 +89,9 @@ const ModifyResearch = memo((props) => {
     };
     // 提交内容
     const turnText = () => {
-        if (!type) {
-            message.info('请输入分类！');
+        if (!text) {
+            message.info('请输入研究内容！');
             return;
-        }
-        if (!location) {
-            message.info('请输入地址！');
-            return;
-        }
-        if (!isEdit) {
-            addToDB();
         } else {
             updateToDB();
         }
@@ -149,51 +104,19 @@ const ModifyResearch = memo((props) => {
     }
     return (
         <ModifyResearchWrapper className='content'>
-            <div className="title-part">
-                <input
-                    className="title-input"
-                    placeholder="请输入分类..."
-                    value={type}
-                    onChange={e => {
-                        setType(e.target.value);
-                    }}
-                />
+            <div className="top-part">
                 <Popconfirm
                     className="pub-btn"
                     placement="bottomRight"
-                    title={`是否${isEdit ? '更新' : '发布'}该内容？`}
+                    title={`是否更新该内容？`}
                     onConfirm={turnText}
                     okText="Yes"
                     cancelText="No"
                 >
-                    {isEdit ? '更新' : '发布'}
-                    内容
+                    更新内容
                 </Popconfirm>
             </div>
-            <div className="orther-part">
-                <div className="location-box">
-                    内容地址：
-                    <input
-                        className="location-input"
-                        type="text"
-                        value={location}
-                        onChange={e => {
-                            setLocation(e.target.value);
-                        }}
-                    />
-                </div>
-                <div className="date-box">
-                    时间：
-                    <input
-                        className="date-input"
-                        type="text"
-                        value={date}
-                        onChange={e => {
-                            setDate(e.target.value);
-                        }}
-                    />
-                </div>
-            </div>
+
             <div className="edit-part">
                 <Input.TextArea
                     value={text}

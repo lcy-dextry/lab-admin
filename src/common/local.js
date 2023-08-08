@@ -13,4 +13,4 @@ export const guideLinks = [
 // lab-url
 export const labURL = 'https://fluidlab.top'
 // activity-classes
-export const activityType = ['成员合影', '学术活动', '日常活动', '成员风采']
+export const activityType = ['成员合影', '学术活动', '日常活动']

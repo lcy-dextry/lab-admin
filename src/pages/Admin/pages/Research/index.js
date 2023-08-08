@@ -1,12 +1,10 @@
 import React, { memo, useState } from 'react'
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { connect } from 'react-redux';
+import { marked } from 'marked';
 // 组件
-import { notification } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
 import { ResearchWrapper } from './style'
 import JumpButton from 'c/JumpButton';
-import ResearchTable from './components/Table';
 // 数据
 import { db } from '@/utils/cloudBase';
 import { getResearchText } from '@/redux/actions';
@@ -15,6 +13,18 @@ const Research = memo(({
     texts,
     getResearchText
 }) => {
+    // 配置marked
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        pedantic: false,
+        sanitize: false,
+        tables: true,
+        breaks: true,
+        smartLists: true,
+        smartypants: false
+    })
+    // 数据
     const [text, setText] = useState([]);
     // 获取
     const getNewTexts = () => {
@@ -28,28 +38,23 @@ const Research = memo(({
         getNewTexts();
         setText(texts);
     }, [texts]);
-    // 删除
-    const deleteText = id => {
-        db.collection('research')
-            .doc(id)
-            .remove()
-            .then(res => {
-                getNewTexts();
-                notification.open({
-                    message: '删除成功',
-                    icon: <DeleteOutlined style={{ color: 'blue' }} />,
-                    placement: 'bottomLeft',
-                    duration: 1.5
-                });
-            });
-    };
+
     return (
         <ResearchWrapper className='content'>
             <div className='header-part'>
-                <JumpButton url={`/modifyResearch`} text={'添加'} />
+                <JumpButton url={`/modifyResearch?type=edit`} text={'修改'} />
             </div>
-            <div className='table-part'>
-                <ResearchTable data={text} deleteText={deleteText} />
+            <div className='show-part'>
+                {text.map(item => {
+                    return (
+                        <div key={item._id}
+                            className="markdown-part markdownStyle"
+                            dangerouslySetInnerHTML={{
+                                __html: marked(item.text).replace(/<pre>/g, "<pre>"),
+                            }}
+                        />
+                    )
+                })}
             </div>
         </ResearchWrapper>
     )
